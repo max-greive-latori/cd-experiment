@@ -1,0 +1,46 @@
+# ----------------------
+# SHOP_API_PASSWORD and DEVELOPER_THEME_ID must be defined in a .env file
+# ----------------------
+
+development:
+  password: ${SHOP_API_PASSWORD}
+  theme_id: ${DEVELOPER_THEME_ID}
+  store: XXXXXX.myshopify.com
+  directory: ./dist
+  timeout: 60s
+  ignore_files:
+    - config/settings_data.json
+    - locales/*
+  config:
+    lang: de
+    storefront_access_token: XXXXXXXXXXXXXXXXXXXX
+
+staging:
+  password: ${SHOP_API_PASSWORD}
+  theme_id: 000000000000000
+  store: XXXXXX.myshopify.com
+  directory: ./dist
+  timeout: 60s
+  ignore_files:
+    - config/settings_data.json
+    - locales/*
+  config:
+    lang: de
+    storefront_access_token: XXXXXXXXXXXXXXXXXXXX
+    # protected_key: XXXXXXXXXXXXXXXXXXXX
+    # protected_bt: XXXXXXXXXXXXXXXXXXXX
+
+production:
+  password: ${SHOP_API_PASSWORD}
+  theme_id: 000000000000000
+  store: XXXXXX.myshopify.com
+  directory: ./dist
+  timeout: 60s
+  ignore_files:
+    - config/settings_data.json
+    - locales/*
+  config:
+    lang: de
+    storefront_access_token: XXXXXXXXXXXXXXXXXXXX
+    # protected_key: XXXXXXXXXXXXXXXXXXXX
+    # protected_bt: XXXXXXXXXXXXXXXXXXXX

@@ -1,0 +1,42 @@
+<% for (var js in htmlWebpackPlugin.files.js) { %>
+
+    <% var basename = htmlWebpackPlugin.files.js[js].split('/').reverse()[0]; %>
+    <% var chunkName = basename.replace('.js', ''); %>
+    <% var chunkNameSufix = basename.split('latori-theme').reverse()[0]; %>
+    <% var baseChunkName = chunkName.replace('latori-theme.', ''); %>
+    <% var templateName = baseChunkName.split('.')[0]; %>
+    <% var templateSuffix = baseChunkName.includes('.') ? baseChunkName.split('.').reverse()[0] : ''; %>
+
+    <% var isDevServer = htmlWebpackPlugin.options.isDevServer === true; %>
+    <% var defer = isDevServer ? '' : 'defer' %>
+    <% var src = `{{ '${basename}' | asset_url }}` %>
+
+    <% if (templateSuffix != '') { %>
+        {%- if template.name == '<%= templateName %>' and template.suffix == '<%= templateSuffix %>' -%}
+            <script type="text/javascript" src="<%= src %>" <%= defer %>></script>
+        {%- else -%}
+            <link rel="prefetch" href="<%= src %>" as="script">
+        {%- endif -%}
+    <% } else { %>
+        <% if (templateName != 'main' && templateName != 'checkout') { %>
+            <% if (templateName != 'customers') { %>
+                {%- if template.name == '<%= templateName %>' -%}
+                    <script type="text/javascript" src="<%= src %>" <%= defer %>></script>
+                {%- else -%}
+                    <link rel="prefetch" href="<%= src %>" as="script">
+                {%- endif -%}
+            <% } else { %>
+                {%- if template.directory == 'customers' -%}
+                    <script type="text/javascript" src="<%= src %>" <%= defer %>></script>
+                {%- else -%}
+                    <link rel="prefetch" href="<%= src %>" as="script">
+                {%- endif -%}
+            <% } %>
+        <% } else { %>
+            <% if (templateName != 'checkout') { %>
+                <script type="text/javascript" src="<%= src %>" <%= defer %>></script>
+            <% } %>
+        <% } %>
+    <% } %>
+
+<% } %>

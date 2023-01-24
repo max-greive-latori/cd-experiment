@@ -1,0 +1,64 @@
+<% for (var css in htmlWebpackPlugin.files.css) { %>
+
+    <% var basename = htmlWebpackPlugin.files.css[css].split('/').reverse()[0]; %>
+    <% var chunkName = basename.replace('.scss', '').replace('.css', '').replace('.styleLiquid', ''); %>
+    <% var chunkNameSufix = basename.split('latori-theme').reverse()[0]; %>
+    <% var baseChunkName = chunkName.replace('latori-theme.', ''); %>
+    <% var templateName = baseChunkName.split('.')[0]; %>
+    <% var templateSuffix = baseChunkName.includes('.') ? baseChunkName.split('.').reverse()[0] : ''; %>
+    
+    <% var isDevServer = htmlWebpackPlugin.options.isDevServer === true; %>
+    <% var src = `{{ '${basename}' | asset_url }}` %>
+    
+    <% if (!isDevServer) { %>
+
+        <% if (templateSuffix != '') { %>
+
+            {%- if template.name == '<%= templateName %>' and template.suffix == '<%= templateSuffix %>' -%}
+                <link rel="stylesheet" href="<%= src %>" media="print" onload="this.media='all';">
+                <noscript><link rel="stylesheet" href="<%= src %>"></noscript>
+            {%- else -%}
+                <link rel="prefetch" href="<%= src %>">
+            {%- endif -%}
+
+        <% } else { %>
+
+            <% if (templateName != 'main' && templateName != 'checkout') { %>
+
+                <% if (templateName != 'customers') { %>
+
+                    {%- if template.name == '<%= templateName %>' -%}
+                        <link rel="stylesheet" href="<%= src %>" media="print" onload="this.media='all';">
+                        <noscript><link rel="stylesheet" href="<%= src %>"></noscript>
+                    {%- else -%}
+                        <link rel="prefetch" href="<%= src %>">
+                    {%- endif -%}
+
+                <% } else { %>
+
+                    {%- if template.directory == 'customers' -%}
+                        <link rel="stylesheet" href="<%= src %>" media="print" onload="this.media='all';">
+                        <noscript><link rel="stylesheet" href="<%= src %>"></noscript>
+                    {%- else -%}
+                        <link rel="prefetch" href="<%= src %>">
+                    {%- endif -%}
+
+                <% } %>
+    
+            <% } else { %>
+
+                <% if (templateName != 'checkout') { %>
+    
+                    <link rel="stylesheet" href="<%= src %>" media="print" onload="this.media='all';">
+                    <noscript><link rel="stylesheet" href="<%= src %>"></noscript>
+
+                <% } %>
+
+            <% } %>
+    
+        <% } %>
+
+    <% } %>
+
+<% } %>
+

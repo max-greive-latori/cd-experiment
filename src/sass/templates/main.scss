@@ -1,0 +1,30 @@
+@import "~@modules/normalize-scss/sass/normalize";
+@import "~@modules/reset-scss/reset.scss";
+@import "~@sass/partials/variables.scss";
+@import "~@sass/partials/buttons.scss";
+@import "~@sass/partials/forms.scss";
+@import "~@sass/components/header.scss";
+@import "~@sass/components/footer.scss";
+@import "~@sass/components/mini-cart.scss";
+@import "~@sass/components/demo.scss";
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+
+    &.no-scroll {
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+    }
+    
+}
+
+main {
+    flex: 1;
+}
