@@ -12,7 +12,7 @@
     "watch:theme": "theme watch -e=development --vars=./.env --notify=./theme_ready",
     "deploy:development": "cross-env NODE_ENV=development webpack --env ENV=development --env ENV_THEMEKIT=development --config webpack.dev.js && theme deploy -e=development --vars=./.env --nodelete && theme open -e=development --vars=./.env",
     "deploy:staging": "cross-env NODE_ENV=production webpack --env ENV=production --env ENV_THEMEKIT=staging --config webpack.prod.js && theme deploy -e=staging --vars=./.env --nodelete && theme open -e=staging --vars=./.env",
-    "deploy:production": "yarn install && cross-env NODE_ENV=production webpack --env ENV=production --env ENV_THEMEKIT=production --config webpack.prod.js",
+    "deploy:production": "cross-env NODE_ENV=production webpack --env ENV=production --env ENV_THEMEKIT=production --config webpack.prod.js",
     "critical:production": "ENV_THEMEKIT=production node critical.css.js && theme deploy -e=production --vars=./.env --allow-live --nodelete"
   },
   "browserslist": [
