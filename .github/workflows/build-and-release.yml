@@ -25,4 +25,4 @@ jobs:
         SRC_FOLDER: dist
         DEST_OWNER: max-greive-latori
         DEST_REPO: watcher
-        DEST_BRANCH: master
+        DEST_BRANCH: main
