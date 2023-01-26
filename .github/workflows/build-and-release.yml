@@ -16,8 +16,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: npm install, build
       run: |
-        npm install
-        npm run build
+        yarn install
+        yarn run deploy:production
     - name: Release build
       uses: hpcodecraft/action-deploy-workspace-to-repo@v2.2
       env:
