@@ -1,0 +1,8 @@
+<style>
+    
+    :root {
+        --colors-headlines: {{ settings.colors_headlines | color_to_rgb | replace: 'rgb(', '' | replace: ')' }};
+        --colors-text: {{ settings.colors_text | color_to_rgb | replace: 'rgb(', '' | replace: ')' }};
+    }
+
+</style>

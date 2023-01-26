@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Organization",
+      "name": {{ shop.name | json }},
+      {% if settings.logo %}
+        {% assign image_size = settings.logo.width | append:'x' %}
+        "logo": {{ settings.logo | img_url: image_size | prepend: "https:" | json }},
+      {% endif %}
+      "sameAs": [
+        {{ settings.social_twitter_link | json }},
+        {{ settings.social_facebook_link | json }},
+        {{ settings.social_pinterest_link | json }},
+        {{ settings.social_instagram_link | json }},
+        {{ settings.social_tumblr_link | json }},
+        {{ settings.social_snapchat_link | json }},
+        {{ settings.social_youtube_link | json }},
+        {{ settings.social_vimeo_link | json }}
+      ],
+      "url": {{ shop.url | append: page.url | json }}
+    }
+  </script>
+
+  {% if request.page_type == 'index' %}
+    {% assign potential_action_target = shop.url | append: routes.search_url | append: "?q={search_term_string}" %}
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "WebSite",
+        "name": {{ shop.name | json }},
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {{ potential_action_target | json }},
+          "query-input": "required name=search_term_string"
+        },
+        "url": {{ shop.url | append: page.url | json }}
+      }
+    </script>
+  {% endif %}
+
+  {%- render 'head-mobile-specific' -%}
+  {%- render 'head-preconnects' -%}
+  {%- render 'head-favicon' -%}
+
+  {%- if canonical_url != blank  -%}
+    <link rel="canonical" href="{{ canonical_url }}">
+  {%- endif -%}
+
+  {%- capture seo_title -%}
+    {%- if request.page_type == 'search' and search.performed == true -%}
+      {{ 'general.search.heading' | t: count: search.results_count }}: {{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+    {%- else -%}
+      {{ page_title }}
+    {%- endif -%}
+    {%- if current_tags -%}
+      {%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+    {%- endif -%}
+    {%- if current_page != 1 -%}
+      &ndash; {{ 'general.meta.page' | t: page: current_page }}
+    {%- endif -%}
+    {%- assign escaped_page_title = page_title | escape -%}
+    {%- unless escaped_page_title contains shop.name -%}
+      &ndash; {{ shop.name }}
+    {%- endunless -%}
+  {%- endcapture -%}
+  <title>{{ seo_title | strip }}</title>
+
+  {%- render 'critical-style' -%}
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  {%- include 'head-social-meta-tags' -%}
+
+  <script>
+    window.theme = window.theme || {};
+    window.theme.shopUrl = "{{ shop.url }}";
+    window.theme.shopifyUrl = "{{ shop.permanent_domain }}";
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.expand = 300;
+    window.lazySizesConfig.loadHidden = false;
+    window.lazySizesConfig.loadMode = 1;
+    window.lazySizesConfig.preloadAfterLoad = true;
+  </script>
+
+  {% render 'css-fonts-variables' %}
+  {% render 'style-tags' %}
+  {% render 'script-tags' %}
+
+  {%- if request.page_type contains 'customers/' -%}
+    <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+    <script src="{{ 'customer_area.js' | shopify_asset_url }}" defer="defer"></script>
+  {%- endif -%}
+
+  {{ content_for_header }}
+  
+</head>
+
+<body class="template-{{ request.page_type | handle }}">
+  
+  {%- section 'header' -%}
+
+  <main id="main" class="main">
+    {{ content_for_layout }}
+  </main>
+
+  {%- section 'footer' -%}
+
+</body>
+
+</html>

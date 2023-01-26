@@ -1,0 +1,39 @@
+{%- capture taxes_shipping_checkout -%}
+    {%- if shop.taxes_included and shop.shipping_policy.body != blank -%}
+        {{ 'cart.general.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
+    {%- elsif shop.taxes_included -%}
+        {{ 'cart.general.taxes_included_but_shipping_at_checkout' | t }}
+    {%- elsif shop.shipping_policy.body != blank -%}
+        {{ 'cart.general.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url }}
+    {%- else -%}
+        {{ 'cart.general.taxes_and_shipping_at_checkout' | t }}
+    {%- endif -%}
+{%- endcapture -%}
+
+<div id="cart" class="cart" data-cart>
+    <script type="application/json">
+        {
+            "i18n": {
+                "cart.general.title": {{ 'cart.general.title' | t | json }},
+                "cart.general.empty": {{ 'cart.general.empty' | t | json }},
+                "cart.general.remove": {{ 'cart.general.remove' | t | json }},
+                "cart.general.subtotal": {{ 'cart.general.subtotal' | t | json }},
+                "cart.general.checkout": {{ 'cart.general.checkout' | t | json }},
+                "cart.label.product": {{ 'cart.label.product' | t | json }},
+                "cart.label.price": {{ 'cart.label.price' | t | json }},
+                "cart.label.quantity": {{ 'cart.label.quantity' | t | json }},
+                "cart.label.total": {{ 'cart.label.total' | t | json }},
+                "taxes_shipping_checkout": {{ taxes_shipping_checkout | json }}
+            }
+        }
+    </script>
+</div>
+
+{% comment %} if the mobile users goes back and the browser loads from cache, we should prevent this and instead reload the whole page {% endcomment %}
+<script>
+    window.onpageshow = function(event) {
+        if (event.persisted) {
+            window.location.reload() 
+        }
+    };
+</script>

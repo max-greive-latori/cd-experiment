@@ -1,0 +1,51 @@
+<header class="header" id="header">
+  <div>
+    <a href="{{ routes.root_url }}">LOGO</a>
+  </div>
+  <div>
+    {% for link in linklists[section.settings.main_linklist].links %}
+      {% if link.links != blank %}
+        {% comment %} Go down T.B.D. {% endcomment %}
+      {% else %}
+        <a href="{{ link.url }}">{{ link.title | escape }}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <div>
+    <button type="button" data-predictive-search>{{ 'layout.navigation.search' | t }}</button>
+    {% if shop.customer_accounts_enabled %}
+      {% if customer %}
+        <a href="{{ routes.account_url }}">{{ 'layout.customer.account' | t }}</a>
+      {% else %}
+        <a href="{{ routes.account_login_url }}">{{ 'layout.customer.log_in' | t }}</a>
+      {% endif %}
+    {% endif %}
+    <a href="{{ routes.cart_url }}">{{ 'layout.cart.title' | t }}</a>
+  </div>
+</header>
+
+{% schema %}
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Section file"
+      },
+      {
+        "type": "paragraph",
+        "content": "header.liquid"
+      },
+      {
+        "type": "header",
+        "content": "Section settings"
+      },
+      {
+        "type": "link_list",
+        "id": "main_linklist",
+        "label": "Menu",
+        "default": "main-menu"
+      }
+    ]
+  }
+{% endschema %}
